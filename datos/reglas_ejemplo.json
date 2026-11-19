@@ -1,0 +1,61 @@
+[
+    {
+        "name": "default-allow-ssh",
+        "direction": "INGRESS",
+        "disabled": false,
+        "sourceRanges": ["0.0.0.0/0"],
+        "allowed": [
+            {
+                "IPProtocol": "tcp",
+                "ports": ["22"]
+            }
+        ]
+    },
+    {
+        "name": "default-allow-rdp",
+        "direction": "INGRESS",
+        "disabled": false,
+        "sourceRanges": ["0.0.0.0/0"],
+        "allowed": [
+            {
+                "IPProtocol": "tcp",
+                "ports": ["3389"]
+            }
+        ]
+    },
+    {
+        "name": "lab-bd-abierta",
+        "direction": "INGRESS",
+        "disabled": false,
+        "sourceRanges": ["0.0.0.0/0"],
+        "allowed": [
+            {
+                "IPProtocol": "tcp",
+                "ports": ["3306"]
+            }
+        ]
+    },
+    {
+        "name": "lab-todo-abierto",
+        "direction": "INGRESS",
+        "disabled": false,
+        "sourceRanges": ["0.0.0.0/0"],
+        "allowed": [
+            {
+                "IPProtocol": "all"
+            }
+        ]
+    },
+    {
+        "name": "interna-segura",
+        "direction": "INGRESS",
+        "disabled": false,
+        "sourceRanges": ["10.128.0.0/9"],
+        "allowed": [
+            {
+                "IPProtocol": "tcp",
+                "ports": ["3306", "5432"]
+            }
+        ]
+    }
+]
