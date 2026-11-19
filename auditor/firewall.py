@@ -1,3 +1,4 @@
+
 from auditor.hallazgo import Hallazgo
 
 
@@ -12,11 +13,12 @@ BASES_DE_DATOS = {"3306", "5432"}
 
 
 def _cubre_puerto(rango, puerto):
+    """Comprueba si un puerto está dentro de un puerto o rango."""
 
     if "-" not in rango:
         return rango == puerto
 
-    inicio, fin = rango.split("-")
+    inicio, fin = rango.split("-", 1)
 
     return int(inicio) <= int(puerto) <= int(fin)
 
@@ -55,7 +57,7 @@ def analizar_reglas(reglas):
 
                 continue
 
-            # Detectar TCP sin restricción de puertos
+            # Detectar todos los puertos TCP
             if protocolo == "tcp" and not puertos:
 
                 hallazgos.append(Hallazgo(
@@ -73,9 +75,13 @@ def analizar_reglas(reglas):
             if protocolo != "tcp":
                 continue
 
+            # Detectar puertos sensibles, incluidos rangos
             for puerto, servicio in PUERTOS_SENSIBLES.items():
 
-                if any(_cubre_puerto(rango, puerto) for rango in puertos):
+                if any(
+                    _cubre_puerto(rango, puerto)
+                    for rango in puertos
+                ):
 
                     severidad = (
                         "critica"
