@@ -27,3 +27,12 @@ Thumbs.db
 # Temporary
 *.log
 *.tmp
+
+# Bases de datos locales
+*.db
+*.sqlite
+*.sqlite3
+
+# Respaldos y parches locales
+*.patch
+*_respaldo_*/

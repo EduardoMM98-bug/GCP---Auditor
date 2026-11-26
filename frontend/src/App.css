@@ -1,6 +1,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
 
+/* =====================================================
+   1. VARIABLES Y CONFIGURACIÓN GENERAL
+===================================================== */
+
 :root {
   font-family: 'DM Sans', sans-serif;
   color: #e8edf5;
@@ -9,21 +13,43 @@
   text-rendering: optimizeLegibility;
   font-optical-sizing: auto;
   font-weight: 400;
+
   --background: #101722;
   --sidebar: #131d2a;
   --panel: #192536;
   --panel-light: #1d2b3e;
+  --panel-hover: #24364b;
+
   --border: #2b3a4e;
-  --muted: #8c9bb0;
+  --border-light: #3a4d64;
+
   --text: #e8edf5;
+  --muted: #8c9bb0;
+  --muted-light: #a7b4c5;
+
   --mint: #53d6b0;
+  --mint-hover: #76e8c5;
+  --mint-dark: #1e3d3b;
+
   --red: #ff6879;
   --orange: #f3ad64;
   --blue: #73a9ff;
+
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+
+  --transition: 0.2s ease;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -34,7 +60,9 @@ body {
 }
 
 button,
-input {
+input,
+textarea,
+select {
   font: inherit;
 }
 
@@ -47,21 +75,62 @@ button:disabled {
   opacity: 0.55;
 }
 
-.app-shell {
-  display: flex;
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+label:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 3px;
+}
+
+#root {
   min-height: 100vh;
 }
 
-/* SIDEBAR */
+a {
+  color: var(--mint);
+}
+
+/* =====================================================
+   2. ESTRUCTURA PRINCIPAL
+===================================================== */
+
+.app-shell {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.page-content {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 30px 36px 20px;
+}
+
+/* =====================================================
+   3. BARRA LATERAL
+===================================================== */
 
 .sidebar {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+
   width: 255px;
   min-width: 255px;
+  padding: 27px 18px 18px;
+
   background: var(--sidebar);
   border-right: 1px solid var(--border);
-  padding: 27px 18px 18px;
-  display: flex;
-  flex-direction: column;
 }
 
 .brand {
@@ -72,13 +141,16 @@ button:disabled {
 }
 
 .brand-mark {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+
   width: 43px;
   height: 43px;
-  border-radius: 13px;
-  display: grid;
-  place-items: center;
+
   color: #101d24;
   background: var(--mint);
+  border-radius: 13px;
 }
 
 .brand-mark svg {
@@ -93,19 +165,19 @@ button:disabled {
 }
 
 .brand-version {
+  margin-top: 4px;
   color: var(--muted);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 1.1px;
-  margin-top: 4px;
 }
 
 .nav-caption {
+  padding: 0 12px 13px;
   color: #6e7e93;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1.4px;
-  padding: 0 12px 13px;
 }
 
 .navigation {
@@ -115,23 +187,27 @@ button:disabled {
 }
 
 .nav-item {
-  width: 100%;
-  border: 0;
-  border-radius: 9px;
-  padding: 12px;
   display: flex;
   align-items: center;
   gap: 12px;
-  background: transparent;
+
+  width: 100%;
+  padding: 12px;
+
   color: #9baabe;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+
   font-size: 13px;
   text-align: left;
-  transition: 0.2s ease;
+
+  transition: var(--transition);
 }
 
 .nav-item:hover {
-  background: #1d2b3d;
   color: var(--text);
+  background: #1d2b3d;
 }
 
 .nav-item.active {
@@ -140,12 +216,18 @@ button:disabled {
   font-weight: 700;
 }
 
+.nav-item svg {
+  flex-shrink: 0;
+}
+
 .nav-count {
   margin-left: auto;
+  padding: 2px 8px;
+
   color: #fff;
   background: #9a4a55;
   border-radius: 20px;
-  padding: 2px 8px;
+
   font-size: 10px;
 }
 
@@ -157,10 +239,12 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: 10px;
-  border: 1px solid var(--border);
-  background: #192536;
-  border-radius: 10px;
+
   padding: 13px;
+
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
 }
 
 .sidebar-api strong,
@@ -180,9 +264,11 @@ button:disabled {
 
 .status-dot {
   display: inline-block;
+  flex-shrink: 0;
+
   width: 8px;
   height: 8px;
-  min-width: 8px;
+
   border-radius: 50%;
 }
 
@@ -201,28 +287,27 @@ button:disabled {
   font-size: 10px;
 }
 
-/* MAIN */
-
-.main-content {
-  flex: 1;
-  min-width: 0;
-}
+/* =====================================================
+   4. BARRA SUPERIOR
+===================================================== */
 
 .topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
   min-height: 91px;
   padding: 20px 36px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  border-bottom: 1px solid var(--border);
+
   background: #131e2b;
+  border-bottom: 1px solid var(--border);
 }
 
 .breadcrumb {
+  margin-bottom: 5px;
   color: var(--muted);
   font-size: 11px;
-  margin-bottom: 5px;
 }
 
 .topbar h1 {
@@ -236,16 +321,21 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: 13px;
+  flex-wrap: wrap;
 }
 
 .connection-pill {
   display: flex;
   align-items: center;
   gap: 8px;
+
   padding: 8px 12px;
+
   border: 1px solid var(--border);
   border-radius: 30px;
+
   font-size: 11px;
+  white-space: nowrap;
 }
 
 .connection-pill.connected {
@@ -260,13 +350,18 @@ button:disabled {
 
 .icon-button {
   display: grid;
+  flex-shrink: 0;
   place-items: center;
+
   width: 37px;
   height: 37px;
+
   color: var(--muted);
-  border: 1px solid var(--border);
   background: var(--panel);
+  border: 1px solid var(--border);
   border-radius: 9px;
+
+  transition: var(--transition);
 }
 
 .icon-button:hover {
@@ -274,23 +369,21 @@ button:disabled {
   border-color: var(--mint);
 }
 
-.page-content {
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 30px 36px 20px;
-}
+/* =====================================================
+   5. ENCABEZADOS
+===================================================== */
 
 .welcome-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 15px;
   margin-bottom: 23px;
 }
 
 .welcome-row h2 {
-  font-size: 18px;
   margin: 0 0 6px;
+  font-size: 18px;
 }
 
 .welcome-row p,
@@ -300,20 +393,26 @@ button:disabled {
   font-size: 12px;
 }
 
-/* BUTTONS */
+/* =====================================================
+   6. BOTONES
+===================================================== */
 
 .primary-button,
 .secondary-button {
-  min-height: 39px;
-  border-radius: 8px;
-  padding: 0 15px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+
+  min-height: 39px;
+  padding: 0 15px;
+
+  border-radius: var(--radius-sm);
+
   font-size: 12px;
   font-weight: 700;
-  transition: 0.2s ease;
+
+  transition: var(--transition);
 }
 
 .primary-button {
@@ -323,7 +422,7 @@ button:disabled {
 }
 
 .primary-button:hover:not(:disabled) {
-  background: #76e8c5;
+  background: var(--mint-hover);
   transform: translateY(-1px);
 }
 
@@ -333,40 +432,54 @@ button:disabled {
   border: 1px solid #3a4b61;
 }
 
-.secondary-button:hover {
+.secondary-button:hover:not(:disabled) {
   background: #30445d;
+  border-color: #536981;
 }
 
 .text-button {
-  border: 0;
-  background: transparent;
+  padding: 7px 0;
   color: var(--mint);
+  background: transparent;
+  border: 0;
   font-size: 11px;
   font-weight: 700;
-  padding: 7px 0;
+}
+
+.text-button:hover {
+  color: #8cebd0;
 }
 
 .text-button span {
   margin-left: 5px;
 }
 
-/* ALERTS */
+/* =====================================================
+   7. MENSAJES Y ALERTAS
+===================================================== */
 
 .alert-message {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 14px;
-  border-radius: 9px;
+
   margin-bottom: 17px;
+  padding: 12px 14px;
+
+  border-radius: 9px;
+
   font-size: 12px;
+  line-height: 1.5;
 }
 
 .alert-message button {
+  flex-shrink: 0;
   margin-left: auto;
-  border: 0;
-  background: transparent;
+
   color: inherit;
+  background: transparent;
+  border: 0;
+
   font-size: 19px;
 }
 
@@ -382,7 +495,9 @@ button:disabled {
   border: 1px solid #315e54;
 }
 
-/* STATISTICS */
+/* =====================================================
+   8. ESTADÍSTICAS
+===================================================== */
 
 .stats-grid {
   display: grid;
@@ -393,19 +508,29 @@ button:disabled {
 
 .stat-card {
   min-width: 0;
+  padding: 19px;
+
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 19px;
+  border-radius: var(--radius-lg);
+
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  border-color: var(--border-light);
+  transform: translateY(-2px);
 }
 
 .stat-icon {
-  width: 36px;
-  height: 36px;
   display: grid;
   place-items: center;
-  border-radius: 10px;
+
+  width: 36px;
+  height: 36px;
+
   margin-bottom: 15px;
+  border-radius: 10px;
 }
 
 .stat-icon.mint {
@@ -434,10 +559,11 @@ button:disabled {
 }
 
 .stat-value {
+  margin: 5px 0;
   font-size: 29px;
   font-weight: 800;
-  margin: 5px 0;
   letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-detail {
@@ -449,20 +575,24 @@ button:disabled {
   margin-bottom: 18px;
 }
 
-/* PANELS */
+/* =====================================================
+   9. PANELES
+===================================================== */
 
 .panel {
+  min-width: 0;
+  padding: 21px;
+
   background: var(--panel);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 21px;
-  min-width: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
 }
 
 .panel-heading {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   margin-bottom: 20px;
 }
@@ -475,16 +605,21 @@ button:disabled {
 }
 
 .panel-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+
   width: 36px;
   height: 36px;
-  display: grid;
-  place-items: center;
-  border-radius: 9px;
-  background: #26394a;
+
   color: var(--mint);
+  background: #26394a;
+  border-radius: 9px;
 }
 
-/* DASHBOARD GRID */
+/* =====================================================
+   10. DASHBOARD
+===================================================== */
 
 .dashboard-grid {
   display: grid;
@@ -498,24 +633,35 @@ button:disabled {
   min-width: 0;
 }
 
+/* Carga de archivos */
+
 .upload-zone {
-  min-height: 155px;
-  border: 1px dashed #53647a;
-  background: #162232;
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  text-align: center;
+  justify-content: center;
+
+  min-height: 155px;
   padding: 18px;
+
+  text-align: center;
+
+  background: #162232;
+  border: 1px dashed #53647a;
+  border-radius: var(--radius-md);
+
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: var(--transition);
 }
 
 .upload-zone:hover {
-  border-color: var(--mint);
   background: #1a2c38;
+  border-color: var(--mint);
+}
+
+.upload-zone:focus-within {
+  outline: 2px solid var(--mint);
+  outline-offset: 3px;
 }
 
 .upload-zone input {
@@ -523,8 +669,8 @@ button:disabled {
 }
 
 .upload-icon {
-  color: var(--mint);
   margin-bottom: 10px;
+  color: var(--mint);
 }
 
 .upload-zone strong {
@@ -538,26 +684,28 @@ button:disabled {
 }
 
 .upload-zone small {
+  margin-top: 7px;
   color: #718198;
   font-size: 10px;
-  margin-top: 7px;
 }
 
 .selected-file {
   display: flex;
   align-items: center;
   gap: 10px;
+
+  margin-top: 12px;
+  padding: 10px 12px;
+
+  color: var(--mint);
   background: #1d3040;
   border: 1px solid #385364;
-  padding: 10px 12px;
-  margin-top: 12px;
-  border-radius: 8px;
-  color: var(--mint);
+  border-radius: var(--radius-sm);
 }
 
 .selected-file div {
-  min-width: 0;
   flex: 1;
+  min-width: 0;
 }
 
 .selected-file strong,
@@ -572,45 +720,52 @@ button:disabled {
 }
 
 .selected-file small {
-  color: var(--muted);
   margin-top: 3px;
+  color: var(--muted);
   font-size: 10px;
 }
 
 .file-ready {
-  font-size: 10px;
   color: var(--mint);
+  font-size: 10px;
 }
 
 .action-row {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 10px;
   margin-top: 15px;
-  flex-wrap: wrap;
 }
 
 .helper-text {
+  margin: 12px 0 0;
   color: var(--orange);
   font-size: 10px;
-  margin: 12px 0 0;
+  line-height: 1.5;
 }
+
+/* Estado del sistema */
 
 .system-status {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #162333;
-  padding: 15px;
-  border-radius: 9px;
+
   margin-bottom: 18px;
+  padding: 15px;
+
+  background: #162333;
+  border-radius: 9px;
 }
 
 .system-status-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+
   width: 36px;
   height: 36px;
-  display: grid;
-  place-items: center;
   border-radius: 50%;
 }
 
@@ -634,15 +789,16 @@ button:disabled {
 }
 
 .system-status span {
+  margin-top: 4px;
   color: var(--muted);
   font-size: 10px;
-  margin-top: 4px;
 }
 
 .system-detail {
   display: flex;
   flex-direction: column;
   gap: 6px;
+
   padding: 12px 0;
   border-bottom: 1px solid var(--border);
 }
@@ -666,7 +822,9 @@ button:disabled {
   margin-top: 10px;
 }
 
-/* FINDINGS */
+/* =====================================================
+   11. HALLAZGOS
+===================================================== */
 
 .recent-panel {
   margin-bottom: 20px;
@@ -679,10 +837,18 @@ button:disabled {
 }
 
 .finding-card {
-  border: 1px solid var(--border);
-  background: #172435;
-  border-radius: 9px;
+  min-width: 0;
   padding: 15px;
+
+  background: #172435;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+
+  transition: border-color var(--transition);
+}
+
+.finding-card:hover {
+  border-color: #40536b;
 }
 
 .finding-main {
@@ -692,11 +858,13 @@ button:disabled {
 }
 
 .finding-symbol {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+
   width: 33px;
   height: 33px;
-  min-width: 33px;
-  display: grid;
-  place-items: center;
+
   color: var(--orange);
   background: #423528;
   border-radius: 9px;
@@ -717,18 +885,39 @@ button:disabled {
 .finding-title-row h4 {
   margin: 2px 0 7px;
   font-size: 12px;
+  line-height: 1.5;
 }
 
 .finding-content > p {
+  margin: 0;
   color: #a6b3c4;
   font-size: 11px;
   line-height: 1.6;
-  margin: 0;
 }
 
+.finding-resource {
+  margin-top: 10px;
+  color: #d0d9e5;
+  font-size: 10px;
+  overflow-wrap: anywhere;
+}
+
+.finding-resource span {
+  color: var(--muted);
+}
+
+/* Severidad */
+
 .severity-badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
   padding: 4px 9px;
+
   border-radius: 20px;
+
   font-size: 9px;
   font-weight: 800;
   white-space: nowrap;
@@ -755,49 +944,295 @@ button:disabled {
   background: #254239;
 }
 
-.finding-resource {
-  margin-top: 10px;
-  color: #d0d9e5;
-  font-size: 10px;
+/* =====================================================
+   12. EXPANSIÓN Y CONTRACCIÓN DE HALLAZGOS
+===================================================== */
+
+.finding-details {
+  margin-top: 14px;
 }
 
-.finding-resource span {
-  color: var(--muted);
+.finding-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  min-height: 34px;
+  padding: 7px 11px;
+
+  color: var(--mint);
+  background: #203b3b;
+  border: 1px solid #315e54;
+  border-radius: 7px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  transition: var(--transition);
 }
+
+.finding-toggle:hover {
+  background: #294b47;
+  border-color: var(--mint);
+}
+
+.finding-toggle svg {
+  transition: transform var(--transition);
+}
+
+.finding-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.finding-details-content {
+  margin-top: 14px;
+}
+
+/* =====================================================
+   13. EXPLICACIÓN Y REMEDIACIÓN
+===================================================== */
 
 .remediation {
-  margin-top: 14px;
-  padding: 12px;
+  margin-top: 16px;
+  padding: 18px;
+
+  background: #172c30;
+  border: 1px solid #31504e;
   border-left: 3px solid var(--mint);
-  border-radius: 0 7px 7px 0;
-  background: #1b3335;
+  border-radius: 9px;
 }
 
-.remediation strong {
+.remediation-section {
+  margin-bottom: 18px;
+}
+
+.remediation-section:last-child {
+  margin-bottom: 0;
+}
+
+.remediation-section strong {
+  display: block;
+  margin-bottom: 8px;
+
+  color: var(--mint);
+  font-size: 12px;
+}
+
+.remediation-section p {
+  margin: 0;
+  color: #c0ceda;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* Pasos de solución */
+
+.remediation-section ol,
+.solution-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  max-width: 100%;
+  margin: 10px 0 0;
+  padding-left: 22px;
+
+  text-align: left;
+}
+
+.remediation-section li,
+.solution-step {
+  padding-left: 4px;
+  color: #c8d4e1;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.remediation-section li::marker,
+.solution-step::marker {
+  color: var(--mint);
+  font-weight: 700;
+}
+
+/* =====================================================
+   14. EJEMPLOS DE CONFIGURACIÓN
+===================================================== */
+
+.configuration-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-bottom: 8px;
+}
+
+.configuration-heading strong {
+  color: var(--mint);
+  font-size: 12px;
+}
+
+.configuration-example {
+  position: relative;
+
+  margin: 9px 0 0;
+  padding: 13px;
+
+  overflow-x: auto;
+
+  background: #101a27;
+  border: 1px solid #34445a;
+  border-radius: 8px;
+
+  text-align: left;
+}
+
+.configuration-example code {
+  display: block;
+
+  color: #8de5c8;
+  font-family: Consolas, 'Courier New', monospace;
+  font-size: 11px;
+  line-height: 1.7;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Copiar configuración */
+
+.copy-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  margin-top: 10px;
+  padding: 7px 11px;
+
+  color: var(--mint);
+  background: #203b3b;
+  border: 1px solid #315e54;
+  border-radius: 7px;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  transition: var(--transition);
+}
+
+.copy-button:hover:not(:disabled) {
+  background: #294b47;
+  border-color: var(--mint);
+}
+
+.copy-feedback {
+  margin-top: 7px;
   color: var(--mint);
   font-size: 10px;
 }
 
-.remediation p {
-  color: #c0ceda;
-  font-size: 11px;
-  line-height: 1.6;
-  margin: 5px 0 0;
+.copy-error {
+  margin-top: 7px;
+  color: var(--red);
+  font-size: 10px;
 }
 
+/* =====================================================
+   15. METADATOS DE AUDITORÍA
+===================================================== */
+
+.audit-metadata {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+
+  margin-bottom: 18px;
+  padding: 15px;
+
+  background: #162333;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.audit-metadata-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.audit-metadata-item span {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.audit-metadata-item strong {
+  color: var(--text);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.audit-metadata-item strong.highlight {
+  color: var(--mint);
+}
+
+/* =====================================================
+   16. EXPORTACIÓN DE AUDITORÍA
+===================================================== */
+
+.export-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 38px;
+  padding: 0 13px;
+
+  color: var(--mint);
+  background: #203b3b;
+  border: 1px solid #315e54;
+  border-radius: 8px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  transition: var(--transition);
+}
+
+.export-button:hover:not(:disabled) {
+  background: #294b47;
+  border-color: var(--mint);
+  transform: translateY(-1px);
+}
+
+.export-button svg {
+  flex-shrink: 0;
+}
+
+/* =====================================================
+   17. ESTADO VACÍO
+===================================================== */
+
 .empty-state {
-  min-height: 165px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
+
+  min-height: 165px;
   padding: 25px;
+
+  text-align: center;
 }
 
 .empty-icon {
-  color: #73869c;
   margin-bottom: 12px;
+  color: #73869c;
 }
 
 .empty-state strong {
@@ -806,13 +1241,16 @@ button:disabled {
 
 .empty-state p {
   max-width: 350px;
+  margin: 7px 0 0;
+
   color: var(--muted);
   font-size: 11px;
   line-height: 1.6;
-  margin: 7px 0 0;
 }
 
-/* AUDITORIAS */
+/* =====================================================
+   18. AUDITORÍAS
+===================================================== */
 
 .full-panel {
   max-width: 850px;
@@ -838,9 +1276,18 @@ button:disabled {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  background: #172435;
+
   padding: 13px;
+
+  background: #172435;
+  border: 1px solid transparent;
   border-radius: 8px;
+
+  transition: var(--transition);
+}
+
+.capability-grid > div:hover {
+  border-color: var(--border-light);
 }
 
 .capability-grid strong {
@@ -850,13 +1297,14 @@ button:disabled {
 .capability-grid small {
   color: var(--muted);
   font-size: 10px;
+  line-height: 1.5;
 }
 
 .capability-dot {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
   margin-bottom: 3px;
+  border-radius: 50%;
 }
 
 .capability-dot.red {
@@ -867,7 +1315,9 @@ button:disabled {
   background: var(--orange);
 }
 
-/* REPORTES */
+/* =====================================================
+   19. REPORTES
+===================================================== */
 
 .report-panel {
   max-width: 800px;
@@ -882,9 +1332,9 @@ button:disabled {
 
 .severity-line {
   display: grid;
-  grid-template-columns: 85px 1fr 25px;
-  gap: 13px;
+  grid-template-columns: 85px minmax(0, 1fr) 25px;
   align-items: center;
+  gap: 13px;
   font-size: 11px;
 }
 
@@ -894,19 +1344,21 @@ button:disabled {
 
 .severity-line > strong {
   text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .bar-track {
   height: 9px;
+  overflow: hidden;
   background: #2a394d;
   border-radius: 20px;
-  overflow: hidden;
 }
 
 .bar-fill {
   height: 100%;
-  border-radius: 20px;
   min-width: 0;
+  border-radius: 20px;
+  transition: width 0.35s ease;
 }
 
 .critical-fill {
@@ -921,25 +1373,35 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: 8px;
-  border-top: 1px solid var(--border);
-  padding-top: 16px;
+
   margin-top: 8px;
+  padding-top: 16px;
+
   color: var(--muted);
+  border-top: 1px solid var(--border);
+
   font-size: 10px;
+  line-height: 1.5;
 }
 
-/* FOOTER */
+/* =====================================================
+   20. FOOTER
+===================================================== */
 
 .page-footer {
   display: flex;
   justify-content: space-between;
   gap: 15px;
+
+  padding: 17px 0 5px;
+
   color: #687b91;
   font-size: 10px;
-  padding: 17px 0 5px;
 }
 
-/* RESPONSIVE */
+/* =====================================================
+   21. RESPONSIVE - TABLETS
+===================================================== */
 
 @media (max-width: 1100px) {
   .stats-grid {
@@ -949,7 +1411,24 @@ button:disabled {
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
+
+  .capability-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .page-content {
+    padding: 26px 24px 18px;
+  }
+
+  .topbar {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
 }
+
+/* =====================================================
+   22. RESPONSIVE - MÓVILES
+===================================================== */
 
 @media (max-width: 760px) {
   .sidebar {
@@ -986,11 +1465,16 @@ button:disabled {
   }
 
   .topbar {
-    padding: 17px;
+    min-height: 75px;
+    padding: 15px 17px;
   }
 
   .topbar h1 {
     font-size: 17px;
+  }
+
+  .topbar-actions {
+    gap: 7px;
   }
 
   .page-content {
@@ -998,8 +1482,12 @@ button:disabled {
   }
 
   .connection-pill {
-    font-size: 0;
     padding: 9px;
+    font-size: 0;
+  }
+
+  .connection-pill .status-dot {
+    margin: 0;
   }
 
   .welcome-row {
@@ -1010,11 +1498,61 @@ button:disabled {
   .capability-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .panel-heading {
+    align-items: flex-start;
+  }
+
+  .audit-metadata {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .finding-title-row {
+    flex-wrap: wrap;
+  }
+
+  .export-button {
+    min-height: 36px;
+  }
 }
 
+/* =====================================================
+   23. RESPONSIVE - MÓVILES PEQUEÑOS
+===================================================== */
+
 @media (max-width: 480px) {
+  .sidebar {
+    width: 55px;
+    min-width: 55px;
+    padding-right: 6px;
+    padding-left: 6px;
+  }
+
+  .brand-mark {
+    width: 37px;
+    height: 37px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    gap: 8px;
+    padding: 13px 11px;
+  }
+
+  .topbar h1 {
+    font-size: 15px;
+  }
+
+  .breadcrumb {
+    font-size: 10px;
+  }
+
+  .page-content {
+    padding: 18px 11px;
+  }
+
   .stats-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 9px;
   }
 
@@ -1038,11 +1576,163 @@ button:disabled {
     width: 100%;
   }
 
+  .finding-main {
+    gap: 9px;
+  }
+
   .finding-title-row {
     flex-direction: column;
+    gap: 5px;
+  }
+
+  .finding-card {
+    padding: 12px;
+  }
+
+  .remediation {
+    padding: 12px;
+  }
+
+  .remediation-section strong {
+    font-size: 11px;
+  }
+
+  .remediation-section p {
+    font-size: 11px;
+  }
+
+  .configuration-example {
+    padding: 10px;
+  }
+
+  .configuration-example code {
+    font-size: 10px;
+  }
+
+  .configuration-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .audit-metadata {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .panel {
+    padding: 15px;
+  }
+
+  .severity-line {
+    grid-template-columns: 65px minmax(0, 1fr) 22px;
+    gap: 8px;
   }
 
   .page-footer {
     flex-direction: column;
+  }
+
+  .capability-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .panel-heading {
+    flex-wrap: wrap;
+  }
+
+  .export-button {
+    width: 100%;
+  }
+
+  .topbar-actions {
+    flex-shrink: 0;
+  }
+}
+
+/* =====================================================
+   24. PREFERENCIA DE MOVIMIENTO
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+
+/* Acciones de hallazgos */
+
+.finding-list-actions,
+.result-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.finding-list-actions > span,
+.result-count {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* Metadatos */
+
+.audit-metadata-item {
+  padding: 3px;
+}
+
+.audit-metadata-item strong {
+  line-height: 1.5;
+}
+
+/* Acciones de resultados */
+
+.result-actions {
+  margin-bottom: 0;
+}
+
+/* Botones de acordeón */
+
+.finding-toggle {
+  margin-top: 12px;
+}
+
+.finding-list-actions .finding-toggle {
+  margin-top: 0;
+}
+
+/* Móviles */
+
+@media (max-width: 760px) {
+  .result-actions {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .result-actions .export-button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .finding-list-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .result-actions {
+    flex-direction: column;
+  }
+
+  .result-actions .export-button {
+    width: 100%;
   }
 }
